@@ -1,8 +1,8 @@
-const CACHE = 'shaoer-app-shell-v1';
+const CACHE = 'shaoer-app-shell-v3';
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    await cache.addAll(['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png']);
+    await cache.addAll(['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-512.png', './icon-award-star.svg']);
     await self.skipWaiting();
   })());
 });
@@ -23,3 +23,4 @@ self.addEventListener('fetch', event => {
   }
   event.respondWith(caches.match(event.request).then(hit => hit || fetch(event.request)));
 });
+

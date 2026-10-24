@@ -1,72 +1,134 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#f6f5f1" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="apple-mobile-web-app-title" content="稍后" />
-<link rel="manifest" href="manifest.webmanifest" />
-<link rel="apple-touch-icon" href="icon-180.png" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f5f1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="稍后">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-180.png">
+<link rel="icon" type="image/svg+xml" href="./icon-award-star.svg">
 <title>稍后 — 一页装下接下来</title>
 <style>
-  :root{--paper:#f6f5f1;--ink:#252822;--muted:#83877d;--line:#e7e6df;--green:#536c4d;--wash:#e8eee3;--white:#fff;--orange:#d08a57;--shadow:0 10px 32px #31382a0d}
-  *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
-  button,input,select,textarea{font:inherit;color:inherit} button{cursor:pointer} .shell{max-width:760px;margin:auto;padding:24px 22px calc(120px + env(safe-area-inset-bottom))}
-  header{display:flex;justify-content:space-between;align-items:flex-end;margin:8px 0 26px}.brand{font:600 28px/1.1 Georgia,serif;letter-spacing:-.7px}.brand span{color:var(--green)} .subtitle{color:var(--muted);font-size:12px;margin-top:7px;letter-spacing:.03em}.date{font-size:12px;color:var(--muted);text-align:right}
-  .intro{padding:19px 21px;background:#ecebe4;border-radius:18px;margin-bottom:17px;display:flex;justify-content:space-between;align-items:center}.intro strong{font-weight:550;font-size:15px}.intro p{font-size:12px;color:var(--muted);margin:5px 0 0}.count{font:24px Georgia,serif;color:var(--green)}
-  .toolbar{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.toolbar h2{font-size:13px;font-weight:600;margin:0}.filter{font-size:11px;color:var(--muted)}
-  .cards{display:grid;gap:10px}.card{background:var(--white);border:1px solid #eeede8;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;transition:transform .18s,opacity .2s}.card.swiping{transform:translateX(-68px)}.row{display:grid;grid-template-columns:75px 1fr auto;align-items:center;gap:13px;padding:16px 15px;min-height:73px}.when{color:var(--green);font:600 12px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.02em}.title{display:block;border:0;background:transparent;padding:0;width:100%;text-align:left;line-height:1.45;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card.open .title{white-space:pre-wrap;overflow:visible;text-overflow:clip}.title-editor{display:block;width:100%;min-height:76px;border:1px solid #dfe4d9;border-radius:9px;background:#fbfcf9;padding:8px 10px;line-height:1.5;resize:vertical;outline-color:#9da98f}.card.done .title{text-decoration:line-through;color:#a5a79e}.actions{display:flex;align-items:center;gap:10px}.check{appearance:none;width:20px;height:20px;border:1.5px solid #b7bcb0;border-radius:50%;margin:0;display:grid;place-items:center}.check:checked{background:var(--green);border-color:var(--green)}.check:checked:after{content:'✓';color:white;font-size:12px}.edit{border:0;background:none;color:#8c9087;font-size:17px;padding:5px 2px}.details{border-top:1px solid #f0efe9;padding:15px 17px 18px;display:none}.card.open .details{display:block}.detail-label{font-size:10px;color:var(--muted);letter-spacing:.12em;margin:0 0 7px}.notes{display:block;width:100%;height:38px;border:1px solid var(--line);background:#fbfbf8;border-radius:10px;padding:8px 12px;outline-color:#9da98f}.meta{display:flex;align-items:center;gap:8px;margin-top:13px;color:var(--muted);font-size:11px}.meta button{border:0;background:none;padding:0;color:var(--green);font-size:11px}.reminder-line{margin-top:9px;color:#777d71;font-size:11px}.empty{padding:36px 20px;text-align:center;color:var(--muted);border:1px dashed #d9d9d0;border-radius:16px;font-size:13px}
-  .addbar{position:fixed;bottom:0;left:0;right:0;padding:14px max(20px,calc((100vw - 720px)/2)) calc(16px + env(safe-area-inset-bottom));background:linear-gradient(0deg,var(--paper) 72%,#f6f5f100);z-index:3}.add{width:100%;border:0;background:var(--green);color:white;border-radius:14px;padding:14px 18px;box-shadow:0 8px 22px #536c4d30;font-size:14px}.add b{font-size:19px;vertical-align:-1px;margin-right:6px;font-weight:400}
-  dialog{border:0;border-radius:22px;padding:0;width:min(520px,calc(100% - 28px));max-height:88vh;box-shadow:0 24px 90px #1f261e40}dialog::backdrop{background:#1d241c66;backdrop-filter:blur(3px)}.modal{padding:22px 22px 20px;overflow-y:auto;max-height:88vh}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h2{font-size:18px;margin:0;font-weight:600}.close{border:0;background:#f1f1ec;border-radius:50%;width:30px;height:30px}.field{margin:14px 0}.field label,.subhead{display:block;font-size:11px;color:var(--muted);margin:0 0 7px}.field input,.field select{width:100%;background:#fafaf7;border:1px solid var(--line);border-radius:10px;padding:11px 12px;outline-color:#9da98f}.field input[type=checkbox]{width:17px;height:17px;accent-color:var(--green)}.timefields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.toggleline{display:flex;align-items:center;gap:9px;font-size:13px}.toggleline input{accent-color:var(--green)}.reminders{display:grid;gap:9px}.reminder{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;background:#f7f7f2;padding:9px 10px;border-radius:11px}.reminder input[type=time]{border:1px solid var(--line);background:white;border-radius:8px;padding:7px}.sound{font-size:10px;color:#73796f;white-space:nowrap}.sound input{accent-color:var(--green);vertical-align:middle}.remove-rem{border:0;background:none;color:#a4a59e;font-size:16px}.add-rem{margin-top:8px;border:1px dashed #b9c2b1;color:var(--green);background:transparent;border-radius:9px;padding:8px 10px;font-size:12px}.foot{display:flex;justify-content:space-between;gap:10px;margin-top:22px}.delete{border:0;background:none;color:#bb6555;font-size:12px}.save{margin-left:auto;border:0;background:var(--green);color:white;border-radius:10px;padding:10px 24px}.cancel{border:0;background:#efefe9;border-radius:10px;padding:10px 18px}.swipe-hint{text-align:center;font-size:10px;color:#a2a49a;margin:15px 0 0}
-  @media(max-width:480px){.shell{padding:18px 15px calc(115px + env(safe-area-inset-bottom))}.row{grid-template-columns:64px 1fr auto;gap:10px;padding:14px 12px}.when{font-size:11px}.actions{gap:8px}.intro{padding:16px 17px}}
+:root{--paper:#f6f5f1;--white:#fff;--ink:#1f2924;--muted:#858a80;--green:#536c4d;--green-dark:#40583a;--line:#e8e7df;--soft:#eeede6;--shadow:0 9px 24px rgba(43,52,38,.055)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}.shell{max-width:760px;margin:auto;padding:24px 22px calc(118px + env(safe-area-inset-bottom))}
+header{display:flex;justify-content:space-between;align-items:flex-end;margin:8px 0 26px}.brand{font:600 28px/1.1 Georgia,"Songti SC",serif;letter-spacing:-.7px}.subtitle{color:var(--muted);font-size:12px;margin-top:7px;letter-spacing:.03em}.date{font-size:12px;color:var(--muted);text-align:right}
+.intro{padding:19px 21px;background:#ecebe4;border-radius:18px;margin-bottom:17px;display:flex;justify-content:space-between;align-items:center;gap:15px}.intro strong{font-weight:550;font-size:15px}.intro p{font-size:12px;color:var(--muted);margin:5px 0 0}.count{font:24px Georgia,serif;color:var(--green);flex:0 0 auto}.loading-dots{display:inline-flex;gap:3px;margin-left:3px;vertical-align:middle}.loading-dots i{width:3px;height:3px;border-radius:50%;background:#8e9988;opacity:.28;animation:dot 1.35s infinite ease-in-out}.loading-dots i:nth-child(2){animation-delay:.18s}.loading-dots i:nth-child(3){animation-delay:.36s}@keyframes dot{0%,65%,100%{opacity:.25;transform:translateY(0)}30%{opacity:.9;transform:translateY(-2px)}}@media(prefers-reduced-motion:reduce){.loading-dots i{animation:none;opacity:.55}}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin:23px 2px 12px}.toolbar h2{font-size:13px;font-weight:600;margin:0}.filter{font-size:11px;color:var(--muted)}.cards{display:grid;gap:10px}.card{background:var(--white);border:1px solid #eeede8;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;transition:transform .18s,opacity .2s}.card.swiping{transform:translateX(-68px)}.row{display:grid;grid-template-columns:minmax(112px,145px) minmax(0,1fr) auto;align-items:center;gap:13px;padding:16px 15px;min-height:73px}.when{color:var(--green);font:600 12px/1.45 -apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.01em;overflow-wrap:anywhere}.title{display:block;border:0;background:transparent;padding:0;width:100%;text-align:left;line-height:1.45;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card.open .title{white-space:pre-wrap;overflow:visible;text-overflow:clip}.title-editor{display:block;width:100%;min-height:76px;border:1px solid #dfe4d9;border-radius:9px;background:#fbfcf9;padding:8px 10px;line-height:1.5;resize:vertical;outline-color:#9da98f}.card.done .title{text-decoration:line-through;color:#a5a79e}.actions{display:flex;align-items:center;gap:10px}.check{appearance:none;width:20px;height:20px;border:1.5px solid #b7bcb0;border-radius:50%;margin:0;display:grid;place-items:center}.check:checked{background:var(--green);border-color:var(--green)}.check:checked:after{content:'✓';color:white;font-size:12px}.edit{border:0;background:none;color:#8c9087;font-size:17px;padding:5px 2px}.details{border-top:1px solid #f0efe9;padding:13px 17px 16px;display:none}.card.open .details{display:block}.detail-label{font-size:10px;color:var(--muted);letter-spacing:.12em;margin:0 0 6px}.notes{display:block;width:100%;height:38px;border:1px solid var(--line);background:#fbfbf8;border-radius:10px;padding:8px 12px;outline-color:#9da98f}.meta{display:flex;align-items:center;gap:8px;margin-top:12px;color:var(--muted);font-size:11px}.meta button{border:0;background:none;padding:0;color:var(--green);font-size:11px}.reminder-line{margin-top:8px;color:#777d71;font-size:11px}.empty{padding:36px 20px;text-align:center;color:var(--muted);border:1px dashed #d9d9d0;border-radius:16px;font-size:13px}
+.swipe-hint{text-align:center;color:#aaa99f;font-size:10px;margin:16px 0 0}.addbar{position:fixed;bottom:0;left:0;right:0;padding:14px max(20px,calc((100vw - 720px)/2)) calc(16px + env(safe-area-inset-bottom));background:linear-gradient(0deg,var(--paper) 72%,#f6f5f100);z-index:3}.add{width:100%;border:0;background:var(--green);color:white;border-radius:14px;padding:14px 18px;box-shadow:0 8px 22px #536c4d30;font-size:14px}.add b{font-size:19px;vertical-align:-1px;margin-right:6px;font-weight:400}
+dialog{border:0;padding:0;border-radius:20px;width:min(540px,calc(100% - 26px));max-height:min(88vh,800px);box-shadow:0 22px 70px #20271c40}dialog::backdrop{background:#17201966;backdrop-filter:blur(2px)}.modal{padding:20px 19px 16px;overflow:auto;max-height:min(88vh,800px)}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.modal-head h2{font-size:17px;margin:0;font-weight:600}.close{width:32px;height:32px;border:0;border-radius:50%;background:#f2f1ec;font-size:21px;color:#73796f}.field{margin:14px 0}.field>label,.field-label{display:block;font-size:11px;color:#747a70;margin-bottom:7px}.field input:not([type=checkbox]),.field select{width:100%;border:1px solid var(--line);background:#fbfbf8;border-radius:10px;padding:10px 11px;min-height:42px;outline-color:#96a18e}.field input[type=date],.field input[type=time]{-webkit-appearance:none;appearance:none}.hint{color:#92958c;font-size:10px;margin:6px 0 0}.choice-grid{display:flex;flex-wrap:wrap;gap:7px}.choice{position:relative;display:inline-flex!important;align-items:center;justify-content:center;min-width:49px;min-height:36px;padding:6px 10px;margin:0!important;border:1px solid var(--line);border-radius:10px;background:#fbfbf8;color:#5b6259!important;font-size:11px!important;cursor:pointer}.choice input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}.choice:has(input:checked){background:#edf1e9;border-color:#aab7a2;color:var(--green-dark)!important;box-shadow:inset 0 0 0 1px #aab7a2}.multi-select-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#fbfbf8;text-align:left;color:#51594f;font-size:12px}.multi-select-trigger span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chevron{color:#848a80;font-size:16px;line-height:1}.month-menu{margin-top:7px;padding:10px;background:#fbfbf8;border:1px solid var(--line);border-radius:11px}.monthly-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.monthly-grid .choice{min-width:0;min-height:34px;padding:3px 0}.times{display:grid;gap:7px}.time-item{display:flex;align-items:center;gap:9px}.time-item input[type=time]{flex:1;min-width:0}.remove-time,.remove-rem{border:0;background:none;color:#a4a59e;font-size:16px}.add-small{margin-top:8px;border:0;background:none;color:var(--green);font-size:11px;padding:4px 0}.toggleline{display:flex!important;align-items:center;gap:8px;padding:11px 12px;border-radius:11px;background:#f1f1eb;margin:17px 0!important;color:#434b42!important;font-size:12px!important}.toggleline input{accent-color:var(--green);width:15px;height:15px;margin:0}.section-divider{height:1px;background:#efeee8;margin:17px 0}.subhead{font-size:12px;font-weight:600;margin-bottom:7px}.reminders{display:grid;gap:9px}.reminder{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;background:#f7f7f2;padding:9px 10px;border-radius:11px}.reminder input[type=time]{border:1px solid var(--line);background:white;border-radius:8px;padding:7px}.sound{font-size:10px;color:#73796f;white-space:nowrap}.sound input{accent-color:var(--green);vertical-align:middle;width:13px;height:13px}.remove-rem{border:0;background:none;color:#a4a59e;font-size:16px}.foot{display:flex;align-items:center;gap:8px;margin-top:20px}.foot button{border:0;border-radius:10px;padding:10px 13px;font-size:12px}.delete{margin-right:auto;background:#f8e9e5;color:#a34f41}.cancel{background:#f1f0eb;color:#666c62}.save{background:var(--green);color:white;min-width:76px}
+@media(max-width:480px){.shell{padding:19px 16px calc(110px + env(safe-area-inset-bottom))}.row{grid-template-columns:minmax(92px,116px) minmax(0,1fr) auto;gap:9px;padding:15px 12px}.when{font-size:11px}.actions{gap:7px}.intro{padding:17px 16px}.intro strong{font-size:14px}.modal{padding:18px 15px 14px}.choice{min-width:45px}.monthly-grid{gap:5px}}
 </style>
 </head>
 <body>
 <main class="shell">
-  <header><div><div class="brand">稍后<span>。</span></div><div class="subtitle">一页装下接下来</div></div><div class="date" id="today"></div></header>
-  <section class="intro"><div><strong>不管叫待办还是日程，都是接下来要做的事。</strong><p>把它们放在一起，按时间慢慢往前走。</p></div><div class="count" id="count">0</div></section>
+  <header><div><div style="display:flex;align-items:center;gap:8px"><img src="./icon-180.png" alt="" width="24" height="24" style="object-fit:contain"><div class="brand">稍后</div></div><div class="subtitle">把想到的事，先放在这里</div></div><div class="date" id="today"></div></header>
+  <section class="intro"><div><strong>不用反复记着，交给我就好</strong><p>大脑内存释放中 <span class="loading-dots" aria-label="处理中"><i></i><i></i><i></i></span></p></div><div class="count" id="count">0</div></section>
   <div class="toolbar"><h2>接下来</h2><div class="filter">按时间排列 · 左滑删除</div></div>
   <section class="cards" id="cards"></section><div class="swipe-hint">轻轻向左滑动卡片即可删除</div>
 </main>
 <div class="addbar"><button class="add" id="add"><b>＋</b>记下一件事</button></div>
 <dialog id="editor"><form class="modal" id="form" method="dialog">
-  <div class="modal-head"><h2 id="modalTitle">安排一件事</h2><button class="close" type="button" id="close">×</button></div>
-  <div class="field"><label for="taskTitle">这件事</label><input id="taskTitle" placeholder="例如：出门办事、吃药、给妈妈打电话" required maxlength="120"></div>
+  <div class="modal-head"><h2 id="modalTitle">安排一件事</h2><button class="close" type="button" id="close" aria-label="关闭">×</button></div>
+  <div class="field"><label for="taskTitle">这件事</label><input id="taskTitle" placeholder="例如：英语课、给客户送水、吃药" required maxlength="2000"></div>
   <div class="field"><label for="kind">什么时候</label><select id="kind"><option value="time">某个时间</option><option value="date">某一天</option><option value="weekday">星期几</option><option value="monthly">每月几号</option><option value="datetime">具体的日期和时间</option></select></div>
-  <div class="field" id="dateField"><label for="dateVal">日期</label><input id="dateVal" type="date"></div>
-  <div class="field" id="timeField" hidden><label for="timeVal">时间</label><input id="timeVal" type="time" value="09:00"></div>
-  <div class="field" id="weekdayField" hidden><label for="weekdayVal">星期</label><select id="weekdayVal"><option value="1">星期一</option><option value="2">星期二</option><option value="3">星期三</option><option value="4">星期四</option><option value="5">星期五</option><option value="6">星期六</option><option value="0">星期日</option></select></div>
-  <div class="field" id="monthlyField" hidden><label for="monthlyVal">每月几号</label><select id="monthlyVal"></select></div>
-  <label class="toggleline field"><input type="checkbox" id="repeat"> 重复（持续按上面的时间方式重复）</label>
-  <div class="field"><div class="subhead">提醒时刻</div><div class="reminders" id="reminders"></div><button class="add-rem" id="addReminder" type="button">＋ 添加一个提醒时刻</button></div>
+  <div class="field" id="dateField" hidden><label for="dateVal">日期</label><input id="dateVal" type="date"></div>
+  <div class="field" id="weekdayField" hidden><div class="field-label">选择星期（可多选）</div><div class="choice-grid" id="weekdayChoices"></div></div>
+  <div class="field" id="monthlyField" hidden><label for="monthToggle">每月几号（可多选）</label><button type="button" class="multi-select-trigger" id="monthToggle" aria-expanded="false"><span id="monthSummary">选择日期</span><span class="chevron">⌄</span></button><div class="month-menu" id="monthMenu" hidden><div class="monthly-grid" id="monthlyChoices"></div><p class="hint">当月没有所选日期时，该日期当月不触发。</p></div></div>
+  <div class="field" id="timesField" hidden><div class="field-label">事项发生时间（可添加多个）</div><div class="times" id="times"></div><button class="add-small" id="addTime" type="button">＋ 添加发生时间</button></div>
+  <label class="toggleline field"><input type="checkbox" id="repeat"> 重复（按所选日期和时间重复）</label>
+  <div class="section-divider"></div>
+  <div class="field"><div class="subhead">提醒时刻</div><p class="hint">提醒时间独立于事项发生时间；重复事项会在每次发生日按此时间提醒。</p><div class="reminders" id="reminders"></div><button class="add-small" id="addReminder" type="button">＋ 添加一个提醒时刻</button></div>
   <div class="foot"><button class="delete" type="button" id="deleteTask" hidden>删除事项</button><button class="cancel" type="button" id="cancel">取消</button><button class="save" type="submit">保存</button></div>
 </form></dialog>
 <script>
 const $=s=>document.querySelector(s), stateKey='shaoer-prototype-v1';
-let tasks=JSON.parse(localStorage.getItem(stateKey)||'null')||[
- {id:'a',title:'早上吃维生素',kind:'time',time:'08:00',repeat:true,done:false,notes:'',reminders:[{time:'07:30',sound:true},{time:'07:50',sound:false},{time:'08:00',sound:true}]},
- {id:'b',title:'把快递寄出去',kind:'date',date:new Date(Date.now()+86400000).toISOString().slice(0,10),repeat:false,done:false,notes:'下班路上去驿站',reminders:[]},
- {id:'c',title:'周末去菜市场',kind:'weekday',weekday:'6',repeat:true,done:false,notes:'记得带帆布袋',reminders:[{time:'09:00',sound:false}]}
-]; let editing=null;
-const days=['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+const weekdays=[['星期一','1'],['星期二','2'],['星期三','3'],['星期四','4'],['星期五','5'],['星期六','6'],['星期日','0']];
+let editing=null;
+const demo=[
+ {id:'sample-english',title:'英语课',kind:'weekday',weekdays:['2','4'],times:['14:00'],repeat:true,done:false,notes:'',reminders:[{time:'13:00',sound:false}]},
+ {id:'sample-water',title:'给客户送水',kind:'monthly',monthDays:[5,25],times:[],repeat:true,done:false,notes:'',reminders:[]},
+ {id:'sample-time',title:'早上吃维生素',kind:'time',times:['08:00'],repeat:true,done:false,notes:'',reminders:[{time:'07:50',sound:true}]}
+];
+function normalizeTask(t){
+ t.weekdays=(t.weekdays||((t.weekday!==undefined&&t.weekday!==null)?[String(t.weekday)]:[])).map(String);
+ t.monthDays=(t.monthDays||((t.dayOfMonth!==undefined&&t.dayOfMonth!==null)?[Number(t.dayOfMonth)]:[])).map(Number);
+ t.times=t.times||((t.time&&['time','datetime'].includes(t.kind))?[t.time]:[]);
+ t.reminders=t.reminders||[];t.notes=t.notes||'';t.done=!!t.done;t.repeat=!!t.repeat;
+ return t;
+}
+let saved;try{saved=JSON.parse(localStorage.getItem(stateKey)||'null')}catch{saved=null}
+let tasks=(Array.isArray(saved)?saved:demo).map(normalizeTask);
 function persist(){localStorage.setItem(stateKey,JSON.stringify(tasks));render()}
-function pretty(t){if(t.kind==='date')return t.date?new Date(t.date+'T12:00:00').toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'}):'选日期';if(t.kind==='time')return t.time||'选时间';if(t.kind==='weekday')return days[Number(t.weekday)||0];if(t.kind==='monthly')return `每月${t.dayOfMonth||25}日`;return (t.date?new Date(t.date+'T12:00:00').toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'}):'日期')+' '+(t.time||'时间')}
-function render(){tasks.sort((a,b)=>a.done-b.done||pretty(a).localeCompare(pretty(b),'zh-CN'));$('#cards').innerHTML='';$('#count').textContent=tasks.filter(x=>!x.done).length; if(!tasks.length){$('#cards').innerHTML='<div class="empty">还没有安排。记下一件小事，剩下的交给时间。</div>';return}
- for(const t of tasks){const card=document.createElement('article');card.className='card'+(t.done?' done':''); card.innerHTML=`<div class="row"><div class="when">${pretty(t)}</div><button class="title" aria-label="展开事项；展开后再次点击可编辑内容">${esc(t.title)}</button><div class="actions"><input class="check" type="checkbox" ${t.done?'checked':''} aria-label="完成"><button class="edit" aria-label="编辑时间与提醒">···</button></div></div><div class="details"><p class="detail-label">备注</p><input class="notes" placeholder="添加备注" value="${esc(t.notes||'')}"><div class="meta"><span>${t.repeat?'↻ 重复':'○ 不重复'}</span><span>·</span><button class="edit-inline">时间与提醒设置</button></div>${t.reminders.length?`<div class="reminder-line">${t.reminders.map(r=>`${r.time} ${r.sound?'🔔':'通知'}`).join('　·　')}</div>`:''}</div>`;
- const titleButton=card.querySelector('.title');titleButton.onclick=()=>{if(!card.classList.contains('open')){card.classList.add('open');return}const editor=document.createElement('textarea');editor.className='title-editor';editor.value=t.title;editor.setAttribute('aria-label','编辑事项内容');titleButton.replaceWith(editor);editor.focus();editor.setSelectionRange(editor.value.length,editor.value.length);editor.onblur=()=>{const value=editor.value.trim();if(value)t.title=value;persist()};editor.onkeydown=e=>{if(e.key==='Escape'){editor.value=t.title;editor.blur()}if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();editor.blur()}}};card.querySelector('.check').onchange=e=>{t.done=e.target.checked;persist()};card.querySelector('.edit').onclick=()=>openEditor(t.id);card.querySelector('.edit-inline').onclick=()=>openEditor(t.id);card.querySelector('.notes').onchange=e=>{t.notes=e.target.value;persist()};
- let sx=0,sy=0;card.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});card.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(dx < -70&&Math.abs(dy)<45){card.classList.add('swiping');setTimeout(()=>{tasks=tasks.filter(x=>x.id!==t.id);persist()},180)}},{passive:true});
- $('#cards').append(card)} }
-function esc(s=''){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function makeReminder(r={time:'08:00',sound:true}){let d=document.createElement('div');d.className='reminder';d.innerHTML=`<input type="time" value="${r.time||'08:00'}" aria-label="提醒时间"><label class="sound"><input type="checkbox" ${r.sound?'checked':''}> 响铃</label><button type="button" class="remove-rem" aria-label="移除提醒">×</button>`;d.querySelector('.remove-rem').onclick=()=>d.remove();return d}
-function openEditor(id){editing=id;let t=tasks.find(x=>x.id===id);$('#modalTitle').textContent=t?'安排一件事':'记下一件事';$('#taskTitle').value=t?.title||'';$('#kind').value=t?.kind||'date';$('#dateVal').value=t?.date||new Date().toISOString().slice(0,10);$('#timeVal').value=t?.time||'09:00';$('#weekdayVal').value=t?.weekday||'1';$('#monthlyVal').value=t?.dayOfMonth||'25';$('#repeat').checked=t?.repeat||false;$('#reminders').innerHTML='';(t?.reminders||[]).forEach(r=>$('#reminders').append(makeReminder(r)));$('#deleteTask').hidden=!t;syncKind();$('#editor').showModal();setTimeout(()=>$('#taskTitle').focus(),100)}
-function syncKind(){let k=$('#kind').value;$('#dateField').hidden=!(k==='date'||k==='datetime');$('#timeField').hidden=!(k==='time'||k==='datetime');$('#weekdayField').hidden=k!=='weekday';$('#monthlyField').hidden=k!=='monthly'}
-$('#kind').onchange=syncKind;$('#add').onclick=()=>openEditor();$('#addReminder').onclick=()=>$('#reminders').append(makeReminder());$('#close').onclick=$('#cancel').onclick=()=>$('#editor').close();$('#deleteTask').onclick=()=>{if(editing){tasks=tasks.filter(x=>x.id!==editing);persist()}$('#editor').close()};
-$('#form').onsubmit=e=>{e.preventDefault();let t=tasks.find(x=>x.id===editing)||{id:crypto.randomUUID(),done:false,notes:''};t.title=$('#taskTitle').value.trim();t.kind=$('#kind').value;t.date=$('#dateVal').value;t.time=$('#timeVal').value;t.weekday=$('#weekdayVal').value;t.dayOfMonth=$('#monthlyVal').value;t.repeat=$('#repeat').checked;t.reminders=[...$('#reminders').children].map(d=>({time:d.querySelector('input[type=time]').value,sound:d.querySelector('input[type=checkbox]').checked})).filter(r=>r.time);if(!editing)tasks.push(t);persist();$('#editor').close()};
-$('#monthlyVal').innerHTML=Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1} 日</option>`).join('');
-$('#today').textContent=new Date().toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});render();
-if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+function dateLabel(s){if(!s)return'选日期';return new Date(s+'T12:00:00').toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'})}
+function timeLabel(times){return(times||[]).join('、')}
+function pretty(t){
+ const times=timeLabel(t.times);
+ if(t.kind==='time')return(t.repeat?'每天 ':'')+(times||'选时间');
+ if(t.kind==='date')return(t.repeat?'每年 ':'')+dateLabel(t.date);
+ if(t.kind==='weekday'){const ds=weekdays.filter(x=>t.weekdays.includes(x[1])).map(x=>x[0].replace('星期','周')).join('、')||'选星期';return ds+(times?' · '+times:'')}
+ if(t.kind==='monthly'){const ds=(t.monthDays||[]).slice().sort((a,b)=>a-b).map(n=>n+'日').join('、')||'选日期';return(t.repeat?'每月':'')+ds+(times?' · '+times:'')}
+ return(t.repeat?'每年 ':'')+dateLabel(t.date)+(times?' · '+times:'');
+}
+function repeatText(t){if(!t.repeat)return'不重复';if(t.kind==='weekday')return'每周重复';if(t.kind==='monthly')return'每月重复';if(t.kind==='date'||t.kind==='datetime')return'每年重复';return'每天重复'}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){
+ tasks.sort((a,b)=>a.done-b.done||pretty(a).localeCompare(pretty(b),'zh-CN'));
+ $('#cards').innerHTML='';$('#count').textContent=tasks.filter(x=>!x.done).length;
+ if(!tasks.length){$('#cards').innerHTML='<div class="empty">还没有安排。想到一件小事，就先放在这里。</div>';return}
+ for(const t of tasks){
+  const card=document.createElement('article');card.className='card'+(t.done?' done':'');
+  const reminders=t.reminders.length?t.reminders.map(r=>esc(r.time)+(r.sound?' 响铃':' 通知')).join('　·　'):'';
+  card.innerHTML='<div class="row"><div class="when">'+esc(pretty(t))+'</div><button class="title" aria-label="展开事项；展开后再次点击可编辑内容">'+esc(t.title)+'</button><div class="actions"><input class="check" type="checkbox" '+(t.done?'checked':'')+' aria-label="完成"><button class="edit" aria-label="编辑时间与提醒">···</button></div></div><div class="details"><p class="detail-label">备注</p><input class="notes" placeholder="添加备注" value="'+esc(t.notes)+'"><div class="meta"><span>↻ '+esc(repeatText(t))+'</span><span>·</span><button class="edit-inline">时间与提醒设置</button></div>'+(reminders?'<div class="reminder-line">'+reminders+'</div>':'')+'</div>';
+  const titleButton=card.querySelector('.title');
+  titleButton.onclick=()=>{if(!card.classList.contains('open')){card.classList.add('open');return}const editor=document.createElement('textarea');editor.className='title-editor';editor.value=t.title;editor.setAttribute('aria-label','编辑事项内容');titleButton.replaceWith(editor);editor.focus();editor.setSelectionRange(editor.value.length,editor.value.length);editor.onblur=()=>{const value=editor.value.trim();if(value)t.title=value;persist()};editor.onkeydown=e=>{if(e.key==='Escape'){editor.value=t.title;editor.blur()}if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();editor.blur()}}};
+  card.querySelector('.check').onchange=e=>{t.done=e.target.checked;persist()};
+  card.querySelector('.edit').onclick=()=>openEditor(t.id);card.querySelector('.edit-inline').onclick=()=>openEditor(t.id);
+  card.querySelector('.notes').onchange=e=>{t.notes=e.target.value;persist()};
+  let sx=0,sy=0;card.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});card.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(dx < -70&&Math.abs(dy)<45){card.classList.add('swiping');setTimeout(()=>{tasks=tasks.filter(x=>x.id!==t.id);persist()},180)}},{passive:true});
+  $('#cards').append(card);
+ }
+}
+function makeChoice(label,value,checked,type){const l=document.createElement('label');l.className='choice';l.innerHTML='<input type="checkbox" value="'+esc(value)+'" '+(checked?'checked':'')+' aria-label="'+esc(label)+'"><span>'+esc(label)+'</span>';return l}
+function buildChoices(){
+ $('#weekdayChoices').innerHTML='';weekdays.forEach(([name,value])=>$('#weekdayChoices').append(makeChoice(name.replace('星期','周'),value,false)));
+ $('#monthlyChoices').innerHTML='';for(let day=1;day<=31;day++){const item=makeChoice(String(day),String(day),false);item.querySelector('input').onchange=updateMonthlySummary;$('#monthlyChoices').append(item)}updateMonthlySummary();
+}
+function makeTimeItem(value='14:00'){const row=document.createElement('div');row.className='time-item';row.innerHTML='<input type="time" value="'+esc(value)+'" aria-label="事项发生时间"><button type="button" class="remove-time" aria-label="移除发生时间">×</button>';row.querySelector('.remove-time').onclick=()=>row.remove();return row}
+function makeReminder(r={time:'09:00',sound:false}){const d=document.createElement('div');d.className='reminder';d.innerHTML='<input type="time" value="'+esc(r.time||'09:00')+'" aria-label="提醒时刻"><label class="sound"><input type="checkbox" '+(r.sound?'checked':'')+'> 响铃</label><button type="button" class="remove-rem" aria-label="移除提醒">×</button>';d.querySelector('.remove-rem').onclick=()=>d.remove();return d}
+function selectedValues(container){return[...container.querySelectorAll('input:checked')].map(x=>x.value)}
+function updateMonthlySummary(){const ds=selectedValues($('#monthlyChoices')).map(Number).sort((a,b)=>a-b);$('#monthSummary').textContent=ds.length?ds.map(n=>n+'日').join('、'):'选择日期'}
+function syncKind(){const k=$('#kind').value;$('#dateField').hidden=!(k==='date'||k==='datetime');$('#weekdayField').hidden=k!=='weekday';$('#monthlyField').hidden=k!=='monthly';$('#timesField').hidden=!(k==='time'||k==='weekday'||k==='monthly'||k==='datetime')}
+function openEditor(id){
+ editing=id;let t=tasks.find(x=>x.id===editing);$('#modalTitle').textContent=t?'安排一件事':'记下一件事';$('#taskTitle').value=t?.title||'';$('#kind').value=t?.kind||'date';$('#dateVal').value=t?.date||new Date().toISOString().slice(0,10);$('#repeat').checked=t?.repeat||false;
+ buildChoices();
+ const ds=t?.weekdays||[];[...$('#weekdayChoices').querySelectorAll('input')].forEach(i=>i.checked=ds.includes(i.value));
+ const ms=t?.monthDays||[];[...$('#monthlyChoices').querySelectorAll('input')].forEach(i=>i.checked=ms.includes(Number(i.value)));updateMonthlySummary();$('#monthMenu').hidden=true;$('#monthToggle').setAttribute('aria-expanded','false');
+ $('#times').innerHTML='';(t?.times||[]).forEach(tm=>$('#times').append(makeTimeItem(tm)));
+ $('#reminders').innerHTML='';(t?.reminders||[]).forEach(r=>$('#reminders').append(makeReminder(r)));
+ $('#deleteTask').hidden=!t;syncKind();$('#editor').showModal();setTimeout(()=>$('#taskTitle').focus(),100);
+}
+$('#kind').onchange=syncKind;$('#monthToggle').onclick=()=>{const opening=$('#monthMenu').hidden;$('#monthMenu').hidden=!opening;$('#monthToggle').setAttribute('aria-expanded',String(opening))};$('#add').onclick=()=>openEditor();$('#addTime').onclick=()=>$('#times').append(makeTimeItem());$('#addReminder').onclick=()=>$('#reminders').append(makeReminder());$('#close').onclick=$('#cancel').onclick=()=>$('#editor').close();
+$('#deleteTask').onclick=()=>{if(editing){tasks=tasks.filter(x=>x.id!==editing);persist()}$('#editor').close()};
+$('#form').onsubmit=e=>{
+ e.preventDefault();
+ let t=tasks.find(x=>x.id===editing)||{id:crypto.randomUUID(),done:false,notes:'',reminders:[]};
+ t.title=$('#taskTitle').value.trim();t.kind=$('#kind').value;t.date=$('#dateVal').value;t.weekdays=selectedValues($('#weekdayChoices'));t.monthDays=selectedValues($('#monthlyChoices')).map(Number);
+ t.times=[...$('#times').querySelectorAll('input[type=time]')].map(i=>i.value).filter(Boolean);t.repeat=$('#repeat').checked;
+ t.reminders=[...$('#reminders').children].map(d=>({time:d.querySelector('input[type=time]').value,sound:d.querySelector('input[type=checkbox]').checked})).filter(r=>r.time);
+ if(t.kind==='weekday'&&!t.weekdays.length){alert('请至少选择一个星期');return}
+ if(t.kind==='monthly'&&!t.monthDays.length){$('#monthMenu').hidden=false;$('#monthToggle').setAttribute('aria-expanded','true');alert('请至少选择一个日期');return}
+ if(['time','datetime'].includes(t.kind)&&!t.times.length){alert('请至少添加一个事项发生时间');return}
+ if(['date','datetime'].includes(t.kind)&&!t.date){alert('请选择日期');return}
+ if(!editing)tasks.push(t);persist();$('#editor').close();
+};
+$('#today').textContent=new Date().toLocaleDateString('zh-CN',{month:'numeric',day:'numeric',weekday:'long'});
+if('serviceWorker' in navigator&&location.protocol!=='file:')navigator.serviceWorker.register('./service-worker.js').catch(()=>{});
+render();
 </script>
 </body>
 </html>
+
+

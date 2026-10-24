@@ -2,7 +2,7 @@
   "id": "./",
   "name": "稍后 — 一页装下接下来",
   "short_name": "稍后",
-  "description": "把接下来要做的事放在一页里。",
+  "description": "把想到的事先放在这里，按自己的节奏慢慢来。",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -10,7 +10,10 @@
   "background_color": "#f6f5f1",
   "theme_color": "#f6f5f1",
   "icons": [
+    { "src": "icon-award-star.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
     { "src": "icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }
+
+
